@@ -20,7 +20,7 @@ import java.net.URL;
 public class ServiceStub {
 
 	protected static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-	protected static final String SERVICE_PATH = "proxy-portlet/service";
+	protected static final String SERVICE_PATH = "cotrix-gcube-portlet/service";
 
 	protected final URL serviceUrl;
 	protected final GCubeSessionMarshaller marshaller;

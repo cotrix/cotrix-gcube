@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.gcube.application.cotrix.proxydomain.User;
-import org.gcube.application.cotrix.proxydomain.UserSession;
-import org.gcube.application.cotrix.proxydomain.UserSessionMarshaller;
+import org.cotrix.gcube.stubs.GCubeSession;
+import org.cotrix.gcube.stubs.GCubeSessionMarshaller;
+import org.cotrix.gcube.stubs.GCubeUser;
 import org.gcube.application.framework.core.session.ASLSession;
 import org.gcube.application.framework.core.session.SessionManager;
 import org.gcube.portal.custom.scopemanager.scopehelper.ScopeHelper;
@@ -32,7 +32,7 @@ public class UserSessionProvider {
 
 	protected static Logger logger = LoggerFactory.getLogger(UserSessionProvider.class);
 
-	protected static UserSessionMarshaller marshaller = new UserSessionMarshaller();
+	protected static GCubeSessionMarshaller marshaller = new GCubeSessionMarshaller();
 	protected static UserManager userManager = new LiferayUserManager();
 	protected static RoleManager roleManager = new LiferayRoleManager();
 
@@ -42,7 +42,7 @@ public class UserSessionProvider {
 		logger.trace("sessionId: {}", httpSession.getId());
 		ASLSession aslSession = SessionManager.getInstance().getASLSession(httpSession.getId(), username);
 
-		User user = new User();
+		GCubeUser user = new GCubeUser();
 		user.setUsername(aslSession.getUsername());
 		user.setFullname(aslSession.getUserFullName());
 		user.setEmail(aslSession.getUserEmailAddress());
@@ -50,7 +50,7 @@ public class UserSessionProvider {
 		List<String> roles = getUserRoles(aslSession);
 		user.setRoles(roles);
 
-		UserSession userSession = new UserSession();
+		GCubeSession userSession = new GCubeSession();
 		userSession.setUser(user);
 		userSession.setScope(aslSession.getScopeName());
 

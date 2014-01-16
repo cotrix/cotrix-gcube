@@ -52,19 +52,23 @@ public class GCubeRealm implements Realm<SessionId> {
 		String sessionId = token.getSessionId();
 		GCubeSession session = proxyStub.getSession(sessionId);
 		GCubeUser gCubeUser = session.getUser();
+		logger.trace("gcube user: {}", gCubeUser);
 		
 		User user = userRepository.get(userByName(gCubeUser.getUsername()));
+		logger.trace("repository user: {}", user);
 		
-		if (user!=null) createUser(gCubeUser);
+		if (user == null) createUser(gCubeUser);
 		else updateUser(gCubeUser, user);
 		
 		return gCubeUser.getUsername();
 	}
 
 	protected void createUser(GCubeUser gCubeUser) {
+		logger.trace("creating user from gcube user: {}", gCubeUser);
 		Collection<Role> roles = mapRoles(gCubeUser);
 		User user = user().name(gCubeUser.getUsername()).email(gCubeUser.getEmail()).fullName(gCubeUser.getFullname()).is(roles).build();
 		userRepository.add(user);
+		logger.trace("user added to repository");
 	}
 	
 	protected void updateUser(GCubeUser gCubeUser, User user) {

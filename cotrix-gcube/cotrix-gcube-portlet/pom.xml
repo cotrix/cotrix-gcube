@@ -107,8 +107,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.gcube.application.cotrix</groupId>
-			<artifactId>proxy-domain</artifactId>
+			<groupId>org.cotrix</groupId>
+			<artifactId>cotrix-gcube-stubs</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 

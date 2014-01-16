@@ -12,7 +12,7 @@ cotrixContainer.style.height = height+"px";
 window.onresize=resizeCotrixContainer;
 </script>
 
-<iframe id="cotrixContainer" src="http://figisapps.fao.org/cotrix/?sessionId=<%= session.getId() %>" style="width:100%;border:none" onload="resizeCotrixContainer()"></iframe>
+<iframe id="cotrixContainer" src="http://localhost:8081/cotrix-web-0.0.1-SNAPSHOT/CodeListManager.html?sessionId=<%= session.getId() %>" style="width:100%;border:none" onload="resizeCotrixContainer()"></iframe>
 
 <!--<div id="cotrixContainer" style="width:100%;border:none;background-color:red" onload="resizeCotrixContainer()">THIS IS A TEST</div>--> 
 
