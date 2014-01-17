@@ -25,7 +25,7 @@ public class ServiceServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String responseBody = UserSessionProvider.getUserSession(session);
+		String responseBody = GCubeSessionProvider.getGCubeSession(session);
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getOutputStream().write(responseBody.getBytes());
 		response.getOutputStream().close();

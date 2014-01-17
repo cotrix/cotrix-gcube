@@ -4,8 +4,6 @@
 package org.cotrix.gcube.security;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Priority;
 import javax.enterprise.inject.Alternative;
@@ -39,6 +37,9 @@ public class GCubeRealm implements Realm<SessionId> {
 	
 	@Inject
 	private UserRepository userRepository;
+	
+	@Inject
+	private RoleMapper roleMapper;
 
 	@Override
 	public boolean supports(Token token) {
@@ -65,7 +66,7 @@ public class GCubeRealm implements Realm<SessionId> {
 
 	protected void createUser(GCubeUser gCubeUser) {
 		logger.trace("creating user from gcube user: {}", gCubeUser);
-		Collection<Role> roles = mapRoles(gCubeUser);
+		Collection<Role> roles = roleMapper.mapRoles(gCubeUser);
 		User user = user().name(gCubeUser.getUsername()).email(gCubeUser.getEmail()).fullName(gCubeUser.getFullname()).is(roles).build();
 		userRepository.add(user);
 		logger.trace("user added to repository");
@@ -73,12 +74,6 @@ public class GCubeRealm implements Realm<SessionId> {
 	
 	protected void updateUser(GCubeUser gCubeUser, User user) {
 		
-	}
-	
-	protected Collection<Role> mapRoles(GCubeUser gCubeUser) {
-		//TODO complete
-		List<Role> roles = Collections.singletonList(GCubeRoles.USER);
-		return roles;
 	}
 
 	@Override

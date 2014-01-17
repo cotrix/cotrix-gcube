@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ page import="org.cotrix.gcube.portlet.CotrixUrlProvider" %>
 
 <portlet:defineObjects />
 
@@ -12,7 +13,4 @@ cotrixContainer.style.height = height+"px";
 window.onresize=resizeCotrixContainer;
 </script>
 
-<iframe id="cotrixContainer" src="http://localhost:8081/cotrix-web-0.0.1-SNAPSHOT/CodeListManager.html?sessionId=<%= session.getId() %>" style="width:100%;border:none" onload="resizeCotrixContainer()"></iframe>
-
-<!--<div id="cotrixContainer" style="width:100%;border:none;background-color:red" onload="resizeCotrixContainer()">THIS IS A TEST</div>--> 
-
+<iframe id="cotrixContainer" src="<%= CotrixUrlProvider.getCotrixUrl(session) %>" style="width:100%;border:none" onload="resizeCotrixContainer()"></iframe>

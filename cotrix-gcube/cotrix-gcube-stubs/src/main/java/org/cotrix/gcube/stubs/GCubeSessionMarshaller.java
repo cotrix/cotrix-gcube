@@ -23,7 +23,7 @@ public class GCubeSessionMarshaller {
 	
 	public GCubeSessionMarshaller() {
 		try {
-		context = JAXBContext.newInstance(GCubeUser.class, GCubeSession.class);
+		context = JAXBContext.newInstance(GCubeSession.class);
 		unmarshaller = context.createUnmarshaller();
 		marshaller = context.createMarshaller();
 		} catch (JAXBException e) {

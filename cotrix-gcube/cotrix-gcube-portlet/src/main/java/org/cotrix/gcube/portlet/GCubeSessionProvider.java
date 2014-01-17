@@ -28,15 +28,15 @@ import org.slf4j.LoggerFactory;
  * @author "Federico De Faveri federico.defaveri@fao.org"
  *
  */
-public class UserSessionProvider {
+public class GCubeSessionProvider {
 
-	protected static Logger logger = LoggerFactory.getLogger(UserSessionProvider.class);
+	protected static Logger logger = LoggerFactory.getLogger(GCubeSessionProvider.class);
 
 	protected static GCubeSessionMarshaller marshaller = new GCubeSessionMarshaller();
 	protected static UserManager userManager = new LiferayUserManager();
 	protected static RoleManager roleManager = new LiferayRoleManager();
 
-	public static String getUserSession(HttpSession httpSession) {
+	public static String getGCubeSession(HttpSession httpSession) {
 		String username = (String) httpSession.getAttribute(ScopeHelper.USERNAME_ATTRIBUTE);
 		logger.trace("username: {}", username);
 		logger.trace("sessionId: {}", httpSession.getId());
@@ -50,12 +50,12 @@ public class UserSessionProvider {
 		List<String> roles = getUserRoles(aslSession);
 		user.setRoles(roles);
 
-		GCubeSession userSession = new GCubeSession();
-		userSession.setUser(user);
-		userSession.setScope(aslSession.getScopeName());
+		GCubeSession gcubeSession = new GCubeSession();
+		gcubeSession.setUser(user);
+		gcubeSession.setScope(aslSession.getScopeName());
 
-		logger.trace("userSession: {}", userSession);
-		String response = marshaller.serialize(userSession);
+		logger.trace("gcubeSession: {}", gcubeSession);
+		String response = marshaller.serialize(gcubeSession);
 		logger.trace("response: {}", response);
 		return response;
 	}

@@ -20,7 +20,7 @@ public class TestProxy {
 	 */
 	public static void main(String[] args) {
 		ServiceStub stub = new ServiceStub("http://localhost:8080/");
-		GCubeSession userSession = stub.getSession("F63F222D86AF5E667D05E721430334B8");
+		GCubeSession userSession = stub.getSession("00A39CA7BD7CB6CC6B6649915763B29D");
 		System.out.println(userSession);
 
 	}
