@@ -22,6 +22,12 @@
 
 	<repositories>
 		<repository>
+			<snapshots />
+			<id>fips-snapshots</id>
+			<name>fips-snapshots</name>
+			<url>http://artifactory.fao.org/artifactory/fips</url>
+		</repository>
+		<repository>
 			<id>gcube-externals</id>
 			<name>gCube Releases</name>
 			<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-externals</url>
