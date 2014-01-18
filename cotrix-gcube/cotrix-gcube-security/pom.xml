@@ -9,16 +9,15 @@
 	<artifactId>cotrix-gcube-security</artifactId>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>org.cotrix</groupId>
 			<artifactId>cotrix-security</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.cotrix</groupId>
 			<artifactId>cotrix-gcube-stubs</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>

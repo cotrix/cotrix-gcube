@@ -101,6 +101,7 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.gcube.portal</groupId>
 			<artifactId>custom-portal-handler</artifactId>
@@ -109,7 +110,6 @@
 		<dependency>
 			<groupId>org.cotrix</groupId>
 			<artifactId>cotrix-gcube-stubs</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

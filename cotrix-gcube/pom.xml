@@ -51,4 +51,24 @@
 		</repository>
 	</repositories>
 
+
+	<dependencyManagement>
+
+		<dependencies>
+			<dependency>
+				<groupId>org.cotrix</groupId>
+				<artifactId>cotrix-gcube-stubs</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.cotrix</groupId>
+				<artifactId>cotrix-security</artifactId>
+				<version>[0.0.1-SNAPSHOT,)</version>
+			</dependency>
+
+		</dependencies>
+
+	</dependencyManagement>
+
 </project>
