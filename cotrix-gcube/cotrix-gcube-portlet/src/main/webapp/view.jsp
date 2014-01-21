@@ -13,4 +13,4 @@ cotrixContainer.style.height = height+"px";
 window.onresize=resizeCotrixContainer;
 </script>
 
-<iframe id="cotrixContainer" src="<%= CotrixUrlProvider.getCotrixUrl(session) %>" style="width:100%;border:none" onload="resizeCotrixContainer()"></iframe>
+<iframe id="cotrixContainer" src="<%= CotrixUrlProvider.getCotrixUrl(session, request) %>" style="width:100%;border:none" onload="resizeCotrixContainer()"></iframe>

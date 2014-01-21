@@ -101,7 +101,7 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.gcube.portal</groupId>
 			<artifactId>custom-portal-handler</artifactId>
@@ -122,11 +122,11 @@
 			<artifactId>usermanagement-core</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.gcube.resources.discovery</groupId>
 			<artifactId>ic-client</artifactId>
-			</dependency>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

@@ -5,8 +5,10 @@ package org.cotrix.gcube.portlet;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.cotrix.gcube.stubs.TokenEncoder;
 import org.gcube.common.resources.gcore.ServiceEndpoint;
 import org.gcube.common.resources.gcore.ServiceEndpoint.AccessPoint;
 import org.gcube.common.scope.api.ScopeProvider;
@@ -25,24 +27,34 @@ public class CotrixUrlProvider {
 	private static final String ENDPOINT_CATEGORY = "Cotrix";
 	private static final String ENDPOINT_NAME = "Application endpoint";
 	private static final String ACCESS_POINT_NAME = "http";
-	private static final String SESSIONID_PARAMETER_NAME = "sessionId";
-	private static final String SCOPE_PARAMETER_NAME = "scope";
+	private static final String TOKEN_PARAMETER_NAME = "token";
 	
-	public static String getCotrixUrl(HttpSession session) {
+	public static String getCotrixUrl(HttpSession session, HttpServletRequest request) {
 		String cotrixUrlInstance = getCotrixInstance();
-		return cotrixUrlInstance+getParameters(session);
+		return cotrixUrlInstance+getParameters(session, request);
 	}
 	
-	protected static String getParameters(HttpSession session) {
+	private static String getParameters(HttpSession session, HttpServletRequest request) {
 		StringBuilder parameters = new StringBuilder("?");
 		
-		parameters.append(SESSIONID_PARAMETER_NAME).append('=').append(session.getId());
-		parameters.append('&').append(SCOPE_PARAMETER_NAME).append('=').append("");
+		String sessionId = session.getId();
+		String scope = ScopeProvider.instance.get();
+		String portalUrl = getPortalUrl(request);
+		String token = TokenEncoder.encode(sessionId, scope, portalUrl);
+		
+		parameters.append(TOKEN_PARAMETER_NAME).append('=').append(token);
 		
 		return parameters.toString();
 	}
 	
-	protected static String getCotrixInstance() {
+	private static String getPortalUrl(HttpServletRequest request) {
+		StringBuilder portalUrl = new StringBuilder();
+		portalUrl.append(request.getScheme()).append("://").append(request.getServerName());
+		if (request.getServerPort()!=80) portalUrl.append(':').append(request.getServerPort());
+		return portalUrl.toString();
+	}
+	
+	private static String getCotrixInstance() {
 		SimpleQuery query = queryFor(ServiceEndpoint.class);
 		
 		query.addCondition(String.format("$resource/Profile/Category/text() eq '%1$s'",ENDPOINT_CATEGORY));
@@ -66,14 +78,14 @@ public class CotrixUrlProvider {
 		throw new IllegalStateException("AccessPoint with name "+ACCESS_POINT_NAME+" not found in resource "+endpoint.id());
 	}
 	
-	protected static ServiceEndpoint searchEnclosing(List<ServiceEndpoint> endpoints, ScopeBean scope) {
+	private static ServiceEndpoint searchEnclosing(List<ServiceEndpoint> endpoints, ScopeBean scope) {
 		if (scope == null) return null;
 		ServiceEndpoint endpoint = filter(endpoints, scope.toString());
 		if (endpoint == null) return searchEnclosing(endpoints, scope.enclosingScope());
 		return endpoint;
 	}
 	
-	protected static ServiceEndpoint filter(List<ServiceEndpoint> endpoints, String scope) {
+	private static ServiceEndpoint filter(List<ServiceEndpoint> endpoints, String scope) {
 		for (ServiceEndpoint endpoint:endpoints) if (endpoint.scopes().contains(scope)) return endpoint;
 		return null;
 	}

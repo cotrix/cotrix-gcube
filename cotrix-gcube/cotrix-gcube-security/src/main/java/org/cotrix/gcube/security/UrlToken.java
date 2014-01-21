@@ -6,22 +6,22 @@ import org.cotrix.security.Token;
  * @author "Federico De Faveri federico.defaveri@fao.org"
  *
  */
-public class SessionId implements Token {
+public class UrlToken implements Token {
 
-	private String sessionId;
+	private String token;
 
 	/**
-	 * @param sessionId
+	 * @param token
 	 */
-	public SessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public UrlToken(String token) {
+		this.token = token;
 	}
 
 	/**
-	 * @return the sessionId
+	 * @return the token
 	 */
-	public String getSessionId() {
-		return sessionId;
+	public String getToken() {
+		return token;
 	}
 
 	/** 
@@ -30,8 +30,8 @@ public class SessionId implements Token {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SessionId [sessionId=");
-		builder.append(sessionId);
+		builder.append("UrlToken [token=");
+		builder.append(token);
 		builder.append("]");
 		return builder.toString();
 	}

@@ -14,6 +14,7 @@ import org.cotrix.domain.user.User;
 import org.cotrix.gcube.stubs.GCubeUser;
 import org.cotrix.gcube.stubs.ServiceStub;
 import org.cotrix.gcube.stubs.GCubeSession;
+import org.cotrix.gcube.stubs.TokenEncoder;
 import org.cotrix.repository.UserRepository;
 import org.cotrix.security.Realm;
 import org.cotrix.security.Token;
@@ -29,11 +30,11 @@ import static org.cotrix.domain.dsl.Users.*;
  *
  */
 @Alternative @Priority(RUNTIME)
-public class GCubeRealm implements Realm<SessionId> {
+public class GCubeRealm implements Realm<UrlToken> {
 	
 	private Logger logger = LoggerFactory.getLogger(GCubeRealm.class);
 	
-	private ServiceStub proxyStub = new ServiceStub("http://localhost:8080/");
+	private ServiceStub proxyStub = new ServiceStub();
 	
 	@Inject
 	private UserRepository userRepository;
@@ -43,15 +44,18 @@ public class GCubeRealm implements Realm<SessionId> {
 
 	@Override
 	public boolean supports(Token token) {
-		return token instanceof SessionId;
+		return token instanceof UrlToken;
 	}
 
 	@Override
-	public String login(SessionId token) {
-		logger.trace("login token: {}", token);
+	public String login(UrlToken urlToken) {
+		logger.trace("login urlToken: {}", urlToken);
 		
-		String sessionId = token.getSessionId();
-		GCubeSession session = proxyStub.getSession(sessionId);
+		String tokenValue = urlToken.getToken();
+		org.cotrix.gcube.stubs.TokenEncoder.Token token = TokenEncoder.decode(tokenValue);
+		
+		
+		GCubeSession session = proxyStub.getSession(token);
 		GCubeUser gCubeUser = session.getUser();
 		logger.trace("gcube user: {}", gCubeUser);
 		
