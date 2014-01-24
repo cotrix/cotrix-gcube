@@ -3,12 +3,14 @@
  */
 package org.cotrix.gcube.portlet;
 
+import static org.gcube.resources.discovery.icclient.ICFactory.*;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.cotrix.gcube.stubs.TokenEncoder;
+import org.cotrix.gcube.stubs.SessionToken;
 import org.gcube.common.resources.gcore.ServiceEndpoint;
 import org.gcube.common.resources.gcore.ServiceEndpoint.AccessPoint;
 import org.gcube.common.scope.api.ScopeProvider;
@@ -16,12 +18,11 @@ import org.gcube.common.scope.impl.ScopeBean;
 import org.gcube.resources.discovery.client.api.DiscoveryClient;
 import org.gcube.resources.discovery.client.queries.api.SimpleQuery;
 
-import static org.gcube.resources.discovery.icclient.ICFactory.*;
-
 /**
  * @author "Federico De Faveri federico.defaveri@fao.org"
  *
  */
+
 public class CotrixUrlProvider {
 	
 	private static final String ENDPOINT_CATEGORY = "Cotrix";
@@ -29,32 +30,46 @@ public class CotrixUrlProvider {
 	private static final String ACCESS_POINT_NAME = "http";
 	private static final String TOKEN_PARAMETER_NAME = "token";
 	
+	
+	//WARNING: REFERRED TO FROM JSP PAGE
 	public static String getCotrixUrl(HttpSession session, HttpServletRequest request) {
-		String cotrixUrlInstance = getCotrixInstance();
-		return cotrixUrlInstance+getParameters(session, request);
+		
+		return instance()+params(session, request);
 	}
 	
-	private static String getParameters(HttpSession session, HttpServletRequest request) {
+	
+	
+	//helpers
+	
+	private static String params(HttpSession session, HttpServletRequest request) {
+	
+		String token = new SessionToken(session.getId(), ScopeProvider.instance.get(),portalUrl(request)).encoded();
+		
 		StringBuilder parameters = new StringBuilder("?");
 		
-		String sessionId = session.getId();
-		String scope = ScopeProvider.instance.get();
-		String portalUrl = getPortalUrl(request);
-		String token = TokenEncoder.encode(sessionId, scope, portalUrl);
-		
-		parameters.append(TOKEN_PARAMETER_NAME).append('=').append(token);
+		parameters.append(TOKEN_PARAMETER_NAME).append('=')
+		          .append(token);
 		
 		return parameters.toString();
 	}
 	
-	private static String getPortalUrl(HttpServletRequest request) {
+	private static String portalUrl(HttpServletRequest request) {
+		
 		StringBuilder portalUrl = new StringBuilder();
-		portalUrl.append(request.getScheme()).append("://").append(request.getServerName());
-		if (request.getServerPort()!=80) portalUrl.append(':').append(request.getServerPort());
+		
+		portalUrl.append(request.getScheme())
+				 .append("://")
+				 .append(request.getServerName());
+		
+		if (request.getServerPort()!=80) 
+			portalUrl.append(':').append(request.getServerPort());
+		
 		return portalUrl.toString();
 	}
 	
-	private static String getCotrixInstance() {
+	
+	private static String instance() {
+		
 		SimpleQuery query = queryFor(ServiceEndpoint.class);
 		
 		query.addCondition(String.format("$resource/Profile/Category/text() eq '%1$s'",ENDPOINT_CATEGORY));
