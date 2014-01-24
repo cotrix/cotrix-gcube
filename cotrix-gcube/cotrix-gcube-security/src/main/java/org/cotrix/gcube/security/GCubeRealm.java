@@ -3,6 +3,11 @@
  */
 package org.cotrix.gcube.security;
 
+import static org.cotrix.common.Constants.*;
+import static org.cotrix.common.Utils.*;
+import static org.cotrix.domain.dsl.Users.*;
+import static org.cotrix.repository.UserQueries.*;
+
 import java.util.Collection;
 
 import javax.annotation.Priority;
@@ -11,30 +16,25 @@ import javax.inject.Inject;
 
 import org.cotrix.domain.user.Role;
 import org.cotrix.domain.user.User;
-import org.cotrix.gcube.stubs.GCubeUser;
-import org.cotrix.gcube.stubs.ServiceStub;
-import org.cotrix.gcube.stubs.GCubeSession;
-import org.cotrix.gcube.stubs.TokenEncoder;
+import org.cotrix.gcube.stubs.PortalSession;
+import org.cotrix.gcube.stubs.PortalUser;
+import org.cotrix.gcube.stubs.SessionToken;
 import org.cotrix.repository.UserRepository;
 import org.cotrix.security.Realm;
-import org.cotrix.security.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.cotrix.repository.UserQueries.*;
-import static org.cotrix.common.Constants.*;
-import static org.cotrix.domain.dsl.Users.*;
 
 /**
  * @author "Federico De Faveri federico.defaveri@fao.org"
  *
  */
 @Alternative @Priority(RUNTIME)
-public class GCubeRealm implements Realm<UrlToken> {
+public class GCubeRealm implements Realm {
 	
 	private Logger logger = LoggerFactory.getLogger(GCubeRealm.class);
 	
-	private ServiceStub proxyStub = new ServiceStub();
+	@Inject
+	private SessionProvider provider;
 	
 	@Inject
 	private UserRepository userRepository;
@@ -43,40 +43,52 @@ public class GCubeRealm implements Realm<UrlToken> {
 	private RoleMapper roleMapper;
 
 	@Override
-	public boolean supports(Token token) {
-		return token instanceof UrlToken;
+	public boolean supports(Object token) {
+		
+		return token instanceof SessionToken;
+	
 	}
 
 	@Override
-	public String login(UrlToken urlToken) {
-		logger.trace("login urlToken: {}", urlToken);
+	public String login(Object token) {
 		
-		String tokenValue = urlToken.getToken();
-		org.cotrix.gcube.stubs.TokenEncoder.Token token = TokenEncoder.decode(tokenValue);
+		SessionToken stoken = reveal(token, SessionToken.class);
 		
+		PortalSession session = provider.sessionFor(stoken);
 		
-		GCubeSession session = proxyStub.getSession(token);
-		GCubeUser gCubeUser = session.getUser();
-		logger.trace("gcube user: {}", gCubeUser);
+		PortalUser remoteUser = session.user();
 		
-		User user = userRepository.get(userByName(gCubeUser.getUsername()));
+		logger.trace("gcube user: {}", remoteUser);
+		
+		User user = userRepository.get(userByName(remoteUser.userName()));
+		
 		logger.trace("repository user: {}", user);
 		
-		if (user == null) createUser(gCubeUser);
-		else updateUser(gCubeUser, user);
+		if (user == null) 
+			createUser(remoteUser);
+		else 
+			updateUser(remoteUser, user);
 		
-		return gCubeUser.getUsername();
+		return remoteUser.userName();
 	}
 
-	protected void createUser(GCubeUser gCubeUser) {
+	protected void createUser(PortalUser gCubeUser) {
+		
 		logger.trace("creating user from gcube user: {}", gCubeUser);
-		Collection<Role> roles = roleMapper.mapRoles(gCubeUser);
-		User user = user().name(gCubeUser.getUsername()).email(gCubeUser.getEmail()).fullName(gCubeUser.getFullname()).is(roles).build();
+		
+		Collection<Role> roles = roleMapper.map(gCubeUser.roles());
+		
+		User user = user().name(gCubeUser.userName())
+						  .email(gCubeUser.email())
+						  .fullName(gCubeUser.fullName())
+						  .is(roles).build();
+		
 		userRepository.add(user);
+		
 		logger.trace("user added to repository");
 	}
 	
-	protected void updateUser(GCubeUser gCubeUser, User user) {
+	protected void updateUser(PortalUser gCubeUser, User user) {
 		
 	}
 

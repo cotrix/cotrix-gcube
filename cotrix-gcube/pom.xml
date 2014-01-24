@@ -14,6 +14,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<properties>
+		<cotrix.version>0.0.1-SNAPSHOT</cotrix.version>
+	</properties>
+
 	<modules>
 		<module>cotrix-gcube-stubs</module>
 		<module>cotrix-gcube-portlet</module>
@@ -50,9 +54,9 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+
 	<build>
-	<plugins>
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -69,6 +73,7 @@
 	<dependencyManagement>
 
 		<dependencies>
+
 			<dependency>
 				<groupId>org.cotrix</groupId>
 				<artifactId>cotrix-gcube-stubs</artifactId>
@@ -78,11 +83,37 @@
 			<dependency>
 				<groupId>org.cotrix</groupId>
 				<artifactId>cotrix-security</artifactId>
-				<version>[0.0.1-SNAPSHOT,)</version>
+				<version>${cotrix.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.cotrix</groupId>
+				<artifactId>cotrix-test-common</artifactId>
+				<version>${cotrix.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 
 		</dependencies>
 
 	</dependencyManagement>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
 
 </project>

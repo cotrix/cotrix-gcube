@@ -3,10 +3,9 @@
  */
 package org.cotrix.gcube.security;
 
-import org.cotrix.domain.user.Role;
-import org.cotrix.gcube.stubs.GCubeUser;
-
 import java.util.Collection;
+
+import org.cotrix.domain.user.Role;
 
 /**
  * @author "Federico De Faveri federico.defaveri@fao.org"
@@ -14,6 +13,6 @@ import java.util.Collection;
  */
 public interface RoleMapper {
 	
-	public Collection<Role> mapRoles(GCubeUser gCubeUser);
+	public Collection<Role> map(Collection<String> roles);
 
 }
