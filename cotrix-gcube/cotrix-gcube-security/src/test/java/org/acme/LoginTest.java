@@ -48,7 +48,7 @@ public class LoginTest extends ApplicationTest {
 	
 	
 	@Test
-	public void login() {
+	public void logins() {
 	
 		PortalUser user = someUserAs(VRE_MANAGER);
 		
@@ -63,8 +63,27 @@ public class LoginTest extends ApplicationTest {
 		assertTrue(logged.is(VRE_MANAGER.internal));
 		
 		assertNotNull(repository.lookup(logged.id()));;
+
+		//come back with extra role
+		
+		user = someUserAs(VO_ADMIN);
+		
+		provider.session = sessionFor(user);
+		
+		logged = service.login(someRequest());
+		
+		assertTrue(logged.isRoot());
 		
 		
+		//come back with lesser role
+		
+		user = someUserAs(VRE_MANAGER);
+		
+		provider.session = sessionFor(user);
+		
+		logged = service.login(someRequest());
+		
+		assertFalse(logged.isRoot());
 	}
 	
 	

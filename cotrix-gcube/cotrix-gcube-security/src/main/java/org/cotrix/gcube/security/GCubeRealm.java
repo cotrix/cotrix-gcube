@@ -26,75 +26,76 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author "Federico De Faveri federico.defaveri@fao.org"
- *
+ * 
  */
-@Alternative @Priority(RUNTIME)
+@Alternative
+@Priority(RUNTIME)
 public class GCubeRealm implements Realm {
-	
+
 	private Logger logger = LoggerFactory.getLogger(GCubeRealm.class);
-	
+
 	@Inject
 	private SessionProvider provider;
-	
+
 	@Inject
 	private UserRepository userRepository;
-	
+
 	@Inject
 	private RoleMapper roleMapper;
 
 	@Override
 	public boolean supports(Object token) {
-		
+
 		return token instanceof SessionToken;
-	
+
 	}
 
 	@Override
 	public String login(Object token) {
-		
+
 		SessionToken stoken = reveal(token, SessionToken.class);
-		
+
 		PortalSession session = provider.sessionFor(stoken);
-		
-		PortalUser remoteUser = session.user();
-		
-		logger.trace("gcube user: {}", remoteUser);
-		
-		User user = userRepository.get(userByName(remoteUser.userName()));
-		
-		logger.trace("repository user: {}", user);
-		
-		if (user == null) 
-			createUser(remoteUser);
-		else 
-			updateUser(remoteUser, user);
-		
-		return remoteUser.userName();
+
+		PortalUser external = session.user();
+
+		User internal = userRepository.get(userByName(external.userName()));
+
+		if (internal == null)
+			intern(external);
+		else
+			update(external, internal);
+
+		return external.userName();
 	}
 
-	protected void createUser(PortalUser gCubeUser) {
-		
-		logger.trace("creating user from gcube user: {}", gCubeUser);
-		
-		Collection<Role> roles = roleMapper.map(gCubeUser.roles());
-		
-		User user = user().name(gCubeUser.userName())
-						  .email(gCubeUser.email())
-						  .fullName(gCubeUser.fullName())
-						  .is(roles).build();
-		
+	protected void intern(PortalUser external) {
+
+		logger.info("interning external gCube user: {}", external);
+
+		Collection<Role> roles = roleMapper.map(external.roles());
+
+		User user = user().name(external.userName()).email(external.email()).fullName(external.fullName()).is(roles).build();
+
 		userRepository.add(user);
-		
-		logger.trace("user added to repository");
-	}
-	
-	protected void updateUser(PortalUser gCubeUser, User user) {
-		
+
 	}
 
+	protected void update(PortalUser external, User internal) {
+
+		logger.trace("updating internal user from external gCube user: {}", external);
+		
+		Collection<Role> roles = roleMapper.map(external.roles());
+
+		User modified = modifyUser(internal).email(external.email()).fullName(external.fullName()).is(roles).build();
+
+		userRepository.update(modified);
+	}
+
+	
 	@Override
-	public void signup(String name, String pwd) {
-		throw new UnsupportedOperationException("Registration to this Realm shoul be made through iMarine portal");
+	public void add(String name, String pwd) {
+		throw new UnsupportedOperationException("sign up active only through iMarine portal");
 	}
 
 }
