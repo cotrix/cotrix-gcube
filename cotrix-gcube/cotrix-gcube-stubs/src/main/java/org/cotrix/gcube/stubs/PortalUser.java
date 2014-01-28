@@ -30,7 +30,9 @@ public class PortalUser {
 	private Set<String> roles;
 
 	@SuppressWarnings("unused")  //JAXB only
-	private PortalUser(){}
+	private PortalUser(){
+		roles = new HashSet<String>();
+	}
 	
 	public PortalUser(String name, String fullName, String email, Collection<String> roles) {
 		this.username=name;
