@@ -53,7 +53,7 @@ public class SessionToken {
 
 		} catch (UnsupportedEncodingException e) {
 
-			throw new RuntimeException("cannot decode taoken " + encoded + " (see cause) ", e);
+			throw new RuntimeException("cannot decode token " + encoded + " (see cause) ", e);
 
 		}
 	}
