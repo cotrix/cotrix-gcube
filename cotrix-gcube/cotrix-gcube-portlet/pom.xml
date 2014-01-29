@@ -127,6 +127,11 @@
 			<groupId>org.gcube.resources.discovery</groupId>
 			<artifactId>ic-client</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.gcube.applicationsupportlayer</groupId>
+			<artifactId>aslsocial</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

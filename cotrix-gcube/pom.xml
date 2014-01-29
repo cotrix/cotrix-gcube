@@ -21,7 +21,7 @@
 	<modules>
 		<module>cotrix-gcube-stubs</module>
 		<module>cotrix-gcube-portlet</module>
-		<module>cotrix-gcube-security</module>
+		<module>cotrix-gcube-extension</module>
 	</modules>
 
 	<repositories>

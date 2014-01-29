@@ -4,13 +4,23 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	
 	<servlet>
-		<servlet-name>service</servlet-name>
-		<servlet-class>org.cotrix.gcube.portlet.ServiceServlet</servlet-class>
+		<servlet-name>user</servlet-name>
+		<servlet-class>org.cotrix.gcube.portlet.UserServiceServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>news</servlet-name>
+		<servlet-class>org.cotrix.gcube.portlet.NewsServiceServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>service</servlet-name>
-		<url-pattern>/service</url-pattern>
+		<servlet-name>user</servlet-name>
+		<url-pattern>/user</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>news</servlet-name>
+		<url-pattern>/news</url-pattern>
 	</servlet-mapping>
 
 </web-app>
