@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.IOUtils;
+import org.cotrix.gcube.stubs.CopyUtils;
 import org.cotrix.gcube.stubs.News;
 import org.gcube.application.framework.core.session.ASLSession;
 import org.gcube.application.framework.core.session.SessionManager;
@@ -32,8 +32,6 @@ public class NewsServiceServlet extends HttpServlet {
 	
 	private static Logger logger = LoggerFactory.getLogger(NewsServiceServlet.class);
 	
-	
-
 	/** 
 	 * {@inheritDoc}
 	 */
@@ -49,7 +47,7 @@ public class NewsServiceServlet extends HttpServlet {
 		
 		ApplicationNewsManager newsManager = new ApplicationNewsManager(aslSession, APPLICATION_ID);
 		
-		String json = IOUtils.toString(request.getInputStream());
+		String json = CopyUtils.toString(request.getInputStream());
 		logger.trace("news json: {}", json);
 		News news = News.valueOf(json);
 		
