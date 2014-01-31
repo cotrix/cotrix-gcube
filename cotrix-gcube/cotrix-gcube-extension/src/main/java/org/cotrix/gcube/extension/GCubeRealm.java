@@ -3,6 +3,7 @@
  */
 package org.cotrix.gcube.extension;
 
+import static org.cotrix.action.UserAction.*;
 import static org.cotrix.common.Constants.*;
 import static org.cotrix.common.Utils.*;
 import static org.cotrix.domain.dsl.Users.*;
@@ -87,6 +88,10 @@ public class GCubeRealm implements Realm {
 		User user = user().name(external.userName()).email(external.email()).fullName(external.fullName()).is(roles).build();
 
 		userRepository.add(user);
+		
+		//TODO tmp workaround
+		User changeset = modifyUser(user).can(VIEW.on(user.id())).build();
+		userRepository.update(changeset);
 
 	}
 
@@ -96,7 +101,8 @@ public class GCubeRealm implements Realm {
 		
 		Collection<Role> roles = roleMapper.map(external.roles());
 
-		User modified = modifyUser(internal).email(external.email()).fullName(external.fullName()).is(roles).build();
+		//TODO tmp workaround
+		User modified = modifyUser(internal).email(external.email()).fullName(external.fullName()).is(roles).can(VIEW.on(internal.id())).build();
 
 		userRepository.update(modified);
 	}
