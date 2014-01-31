@@ -64,24 +64,17 @@ public class LoginTest extends ApplicationTest {
 		
 		assertNotNull(repository.lookup(logged.id()));;
 
-		//come back with extra role
+		//come back with less role
 		
-		user = someUserAs(VO_ADMIN);
-		
-		provider.proxy.portalUser = user;
-		
-		logged = service.login(someRequest());
-		
-			
-		//come back with lesser role
-		
-		user = someUserAs(VRE_MANAGER);
+		user = someUserAs();
 		
 		provider.proxy.portalUser = user;
 		
 		logged = service.login(someRequest());
 		
-		assertFalse(logged.isRoot());
+		System.out.println(logged.directRoles());
+		
+		assertFalse(logged.is(VRE_MANAGER.internal));
 	}
 	
 	
@@ -105,7 +98,7 @@ public class LoginTest extends ApplicationTest {
 		for (PortalRole role : roles)
 			values.add(role.value);
 		
-		return new PortalUser(UUID.randomUUID().toString(), "some one", "some.one@me.com",values);
+		return new PortalUser("user", "some one", "some.one@me.com",values);
 	}
 	
 	static class TestPortalProxy implements PortalProxy {

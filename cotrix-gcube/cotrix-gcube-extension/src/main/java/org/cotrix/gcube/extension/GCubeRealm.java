@@ -101,8 +101,11 @@ public class GCubeRealm implements Realm {
 		
 		Collection<Role> roles = roleMapper.map(external.roles());
 
-		//TODO tmp workaround
-		User modified = modifyUser(internal).email(external.email()).fullName(external.fullName()).is(roles).can(VIEW.on(internal.id())).build();
+		User modified = modifyUser(internal)
+							.email(external.email())
+							.fullName(external.fullName())
+							.isNot(internal.directRoles()) //eliminate older roles first
+							.is(roles).build();
 
 		userRepository.update(modified);
 	}
