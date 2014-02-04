@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import org.cotrix.common.cdi.BeanSession;
 import org.cotrix.common.cdi.Current;
+import org.cotrix.domain.dsl.Roles;
 import org.cotrix.domain.user.Role;
 import org.cotrix.domain.user.User;
 import org.cotrix.gcube.stubs.PortalUser;
@@ -104,7 +105,7 @@ public class GCubeRealm implements Realm {
 		User modified = modifyUser(internal)
 							.email(external.email())
 							.fullName(external.fullName())
-							.isNot(internal.directRoles()) //eliminate older roles first
+							.isNoLonger(internal.directRoles()) //eliminate older roles first
 							.is(roles).build();
 
 		userRepository.update(modified);

@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Priority;
 import javax.enterprise.inject.Alternative;
@@ -75,6 +74,36 @@ public class LoginTest extends ApplicationTest {
 		System.out.println(logged.directRoles());
 		
 		assertFalse(logged.is(VRE_MANAGER.internal));
+	}
+	
+	@Test
+	public void loginsGetRole() {
+	
+		PortalUser user = someUserAs();
+		
+		provider.proxy.portalUser = user;
+		
+		User logged = service.login(someRequest());
+		
+		assertEquals(user.email(),logged.email());
+		assertEquals(user.userName(),logged.name());
+		assertEquals(user.fullName(),logged.fullName());
+
+		assertFalse(logged.is(VRE_MANAGER.internal));
+		
+		assertNotNull(repository.lookup(logged.id()));;
+
+		//come back with bigger role
+		
+		user = someUserAs(VRE_MANAGER);
+		
+		provider.proxy.portalUser = user;
+		
+		logged = service.login(someRequest());
+		
+		System.out.println(logged.directRoles());
+		
+		assertTrue(logged.is(VRE_MANAGER.internal));
 	}
 	
 	
