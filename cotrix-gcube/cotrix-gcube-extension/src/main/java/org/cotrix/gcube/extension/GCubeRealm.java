@@ -17,7 +17,6 @@ import javax.inject.Inject;
 
 import org.cotrix.common.cdi.BeanSession;
 import org.cotrix.common.cdi.Current;
-import org.cotrix.domain.dsl.Roles;
 import org.cotrix.domain.user.Role;
 import org.cotrix.domain.user.User;
 import org.cotrix.gcube.stubs.PortalUser;

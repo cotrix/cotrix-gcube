@@ -94,33 +94,4 @@ public class DefaultPortalProxyProvider implements PortalProxyProvider {
 			return scope.toString();
 		return getInfrastructureScope(enclosing);
 	}
-	
-	public static class SafePortalUrl {
-		
-		private String url;
-		
-		private SafePortalUrl(String url) {
-			this.url = url;
-		}
-
-		/**
-		 * @return the url
-		 */
-		public String getUrl() {
-			return url;
-		}
-
-		/** 
-		 * {@inheritDoc}
-		 */
-		@Override
-		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append("SafePortalUrl [url=");
-			builder.append(url);
-			builder.append("]");
-			return builder.toString();
-		}
-	}
-
 }
