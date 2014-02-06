@@ -39,13 +39,23 @@ public class DefaultPortalProxyProvider implements PortalProxyProvider {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DefaultPortalProxyProvider.class);
 	
+	protected Portals portals = new Portals();
+	
 	/** 
 	 * {@inheritDoc}
 	 */
 	@Override
 	public PortalProxy getPortalProxy(SessionToken sessionToken) {
 		try {
-			String verifiedPortalUrl = retrievePortalUrl(sessionToken.scope(), sessionToken.origin());
+			String scope = sessionToken.scope();
+			String portalUrl = sessionToken.origin();
+			String verifiedPortalUrl = null;
+			
+			if (!portals.in(scope).contains(portalUrl)) {
+				verifiedPortalUrl = retrievePortalUrl(scope, portalUrl);
+				portals.add(scope, portalUrl);
+			} else verifiedPortalUrl = portalUrl;
+
 			return new DefaultPortalProxy(verifiedPortalUrl, sessionToken.id());
 		} catch(MalformedURLException e) {
 			throw new RuntimeException("PortalProxy creation failed for session token "+sessionToken, e);
