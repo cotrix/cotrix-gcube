@@ -82,6 +82,8 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	
 	<dependencies>
 		<dependency>
 			<groupId>javax.portlet</groupId>
@@ -131,6 +133,7 @@
 			<groupId>org.gcube.applicationsupportlayer</groupId>
 			<artifactId>aslsocial</artifactId>
 		</dependency>
+		
 	</dependencies>
 
 	<dependencyManagement>
