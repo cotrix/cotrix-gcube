@@ -12,6 +12,7 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -22,7 +23,6 @@
 		<dependency>
 			<groupId>org.gcube.resources.discovery</groupId>
 			<artifactId>ic-client</artifactId>
-			<version>1.0.1-2.17.1</version>
 		</dependency>
 	</dependencies>
 
