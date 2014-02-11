@@ -6,7 +6,18 @@
 		<artifactId>cotrix-gcube</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+
 	<artifactId>cotrix-gcube-extension</artifactId>
+
+	<properties>
+		<distroDirectory>distro</distroDirectory>
+	</properties>
+	
+	<scm>
+		<connection>scm:svn:http://svn.d4science.research-infrastructures.eu/gcube/trunk/application/${project.artifactId}</connection>
+		<developerConnection>scm:svn:https://svn.d4science.research-infrastructures.eu/gcube/trunk/application/${project.artifactId}</developerConnection>
+		<url>http://svn.d4science.research-infrastructures.eu/gcube/trunk/application/${project.artifactId}</url>
+	</scm>
 
 	<dependencies>
 
@@ -19,7 +30,6 @@
 			<groupId>org.cotrix</groupId>
 			<artifactId>cotrix-gcube-stubs</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.cotrix</groupId>
@@ -34,4 +44,28 @@
 		</dependency>
 
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>${distroDirectory}/descriptor.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>servicearchive</id>
+						<phase>install</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
 </project>
