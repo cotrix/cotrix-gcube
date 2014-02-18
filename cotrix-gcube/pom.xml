@@ -15,7 +15,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<cotrix.version>0.0.1-SNAPSHOT</cotrix.version>
+		<cotrix.version>0.1.0-SNAPSHOT</cotrix.version>
 	</properties>
 
 	<modules>
