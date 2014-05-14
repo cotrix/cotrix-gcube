@@ -23,7 +23,7 @@ public class RequestLifecycle {
 	private BeanSession session;
 	
 	void onStartRequest(@Observes StartRequest start){
-		init(session.get(SessionToken.class), session.get(User.class));
+		if (session.contains(SessionToken.class)) init(session.get(SessionToken.class), session.get(User.class));
 	}
 	
 	void onEndRequest(@Observes EndRequest end){

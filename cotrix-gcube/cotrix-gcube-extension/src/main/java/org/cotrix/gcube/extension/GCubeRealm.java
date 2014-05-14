@@ -101,7 +101,7 @@ public class GCubeRealm implements Realm {
 		//refresh cloud with "personal" repos
 		for (RepositoryService service : cloud.repositories())
 			if (service.name().equals(WorkspacePlugin.name)) {
-				cloud.discover(service);
+				cloud.discover(2*60*1000,service);
 				break;
 			}
 		
