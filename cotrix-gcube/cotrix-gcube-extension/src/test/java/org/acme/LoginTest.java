@@ -5,18 +5,23 @@ import static org.cotrix.gcube.extension.PortalRole.*;
 import static org.cotrix.gcube.extension.SessionTokenCollector.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.virtualrepository.CommonProperties.*;
+import static org.virtualrepository.Context.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Priority;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
 
+import org.cotrix.common.cdi.ApplicationEvents.ApplicationEvent;
+import org.cotrix.common.cdi.ApplicationEvents.EndRequest;
+import org.cotrix.common.cdi.ApplicationEvents.StartRequest;
 import org.cotrix.common.cdi.Current;
 import org.cotrix.domain.user.User;
 import org.cotrix.gcube.extension.PortalProxy;
@@ -24,10 +29,16 @@ import org.cotrix.gcube.extension.PortalProxyProvider;
 import org.cotrix.gcube.extension.PortalRole;
 import org.cotrix.gcube.stubs.PortalUser;
 import org.cotrix.gcube.stubs.SessionToken;
+import org.cotrix.io.CloudService;
+import org.cotrix.io.impl.DefaultCloudService;
 import org.cotrix.repository.UserRepository;
+import org.cotrix.security.LoginRequest;
 import org.cotrix.security.LoginService;
 import org.cotrix.test.ApplicationTest;
+import org.gcube.common.scope.api.ScopeProvider;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.virtualrepository.RepositoryService;
 
 @Priority(TEST)
 public class LoginTest extends ApplicationTest {
@@ -44,6 +55,16 @@ public class LoginTest extends ApplicationTest {
 	
 	@Inject
 	UserRepository repository;
+	
+	@Inject
+	Event<ApplicationEvent> events;
+	
+	@Produces @Alternative @Singleton 
+	static CloudService cloud(DefaultCloudService original) {
+		CloudService mockCloud = spy(original);
+		doReturn(0).when(mockCloud).discover(Mockito.<RepositoryService>anyVararg());
+		return mockCloud;
+	}
 	
 	
 	@Test
@@ -78,7 +99,7 @@ public class LoginTest extends ApplicationTest {
 	
 	@Test
 	public void loginsGetRole() {
-	
+		
 		PortalUser user = someUserAs();
 		
 		provider.proxy.portalUser = user;
@@ -107,18 +128,47 @@ public class LoginTest extends ApplicationTest {
 	}
 	
 	
+	@Test
+	public void requestsFollowingLoginAreInitialised() {
+		
+		String scope = "/this/scope";
+		
+		PortalUser puser = someUserAs();
+		
+		provider.proxy.portalUser = puser;
+		
+		User user = service.login(someRequestWith(someTokenFor(scope)));
+		
+		events.fire(StartRequest.INSTANCE);
+		
+		assertEquals(scope,ScopeProvider.instance.get());
+		
+		assertEquals(user.name(),properties().lookup(USERNAME.name()).value(String.class));
+		
+		events.fire(EndRequest.INSTANCE);
+		
+		assertNull(ScopeProvider.instance.get());
+	}
+	
+	
 	//helpers
 	
-	HttpServletRequest someRequest() {
+	LoginRequest someRequestWith(SessionToken token) {
 		
-		HttpServletRequest req = mock(HttpServletRequest.class);
+		LoginRequest req = mock(LoginRequest.class);
 		
-		when(req.getAttribute(URL_TOKEN_ATTRIBUTE_NAME)).thenReturn(someToken().encoded());
+		when(req.getAttribute(URL_TOKEN_ATTRIBUTE_NAME)).thenReturn(token.encoded());
 		
 		return req;
 	}
-	SessionToken someToken() {
-		return new SessionToken("id", "some/scope", "u");
+
+	LoginRequest someRequest() {
+		
+		return someRequestWith(someTokenFor("some/scope"));
+	}
+	
+	SessionToken someTokenFor(String scope) {
+		return new SessionToken("id", scope, "u");
 	}
 	
 	

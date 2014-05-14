@@ -2,8 +2,7 @@ package org.cotrix.gcube.extension;
 
 import static org.cotrix.gcube.stubs.SessionToken.*;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.cotrix.security.LoginRequest;
 import org.cotrix.security.TokenCollector;
 
 /**
@@ -14,8 +13,9 @@ public class SessionTokenCollector implements TokenCollector {
 
 	public static final String URL_TOKEN_ATTRIBUTE_NAME = "TOKEN";
 	
+	
 	@Override
-	public Object token(HttpServletRequest request) {
+	public Object token(LoginRequest request) {
 		
 		String token = (String) request.getAttribute(URL_TOKEN_ATTRIBUTE_NAME);
 		
