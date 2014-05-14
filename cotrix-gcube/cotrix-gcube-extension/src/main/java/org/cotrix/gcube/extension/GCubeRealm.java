@@ -8,18 +8,14 @@ import static org.cotrix.common.Constants.*;
 import static org.cotrix.common.Utils.*;
 import static org.cotrix.domain.dsl.Users.*;
 import static org.cotrix.repository.UserQueries.*;
-import static org.virtualrepository.CommonProperties.*;
 
 import java.util.Collection;
 
 import javax.annotation.Priority;
-import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.cotrix.common.cdi.ApplicationEvents.EndRequest;
-import org.cotrix.common.cdi.ApplicationEvents.StartRequest;
 import org.cotrix.common.cdi.BeanSession;
 import org.cotrix.common.cdi.Current;
 import org.cotrix.domain.user.Role;
@@ -29,11 +25,9 @@ import org.cotrix.gcube.stubs.SessionToken;
 import org.cotrix.io.CloudService;
 import org.cotrix.repository.UserRepository;
 import org.cotrix.security.Realm;
-import org.gcube.common.scope.api.ScopeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.workspace.WorkspacePlugin;
-import org.virtualrepository.Context;
 import org.virtualrepository.RepositoryService;
 
 /**
@@ -65,6 +59,9 @@ public class GCubeRealm implements Realm {
 	@Inject
 	@Current
 	private BeanSession session;
+	
+	@Inject
+	private RequestLifecycle lifecycle;
 
 	@Override
 	public boolean supports(Object token) {
@@ -96,35 +93,10 @@ public class GCubeRealm implements Realm {
 		return external.userName();
 	}
 	
-	void onStartRequest(@Observes StartRequest start){
-		initRequest(session.get(SessionToken.class), session.get(User.class));
-	}
-	
-	void onEndRequest(@Observes EndRequest end){
-		endRequest();
-	}
-	
-	
-	private void initRequest(SessionToken token, User user) {
-		
-		Context.properties().add(USERNAME.property(user.name()));
-		
-		ScopeProvider.instance.set(token.scope());
-		
-	}
-	
-	private void endRequest() {
-		
-		ScopeProvider.instance.reset();
-		
-	}
-	
-	
-	
 	
 	private void initSession(SessionToken token, User user) {
 		
-		initRequest(token, user);
+		lifecycle.init(token, user);
 		
 		//refresh cloud with "personal" repos
 		for (RepositoryService service : cloud.repositories())
