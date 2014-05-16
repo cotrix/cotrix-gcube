@@ -119,7 +119,7 @@
 
 			<properties>
 				<cotrix.version>0.2.0-SNAPSHOT</cotrix.version>
-				<ic.version>1.0.1-2.17.1</ic.version>
+				<ic.version>[1.0.0-SNAPSHOT, 2.0.0-SNAPSHOT)</ic.version>
 			</properties>
 
 
@@ -133,14 +133,14 @@
 				</repository>
 
 				<repository>
-					<id>gcube-releases</id>
-					<name>gCube Releases</name>
-					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-releases</url>
+					<id>gcube-snapshots</id>
+					<name>gCube Snapshots</name>
+					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-snapshots</url>
 					<releases>
-						<enabled>true</enabled>
+						<enabled>false</enabled>
 					</releases>
 					<snapshots>
-						<enabled>false</enabled>
+						<enabled>true</enabled>
 					</snapshots>
 				</repository>
 
