@@ -62,7 +62,8 @@ public class LoginTest extends ApplicationTest {
 	@Produces @Alternative @Singleton 
 	static CloudService cloud(DefaultCloudService original) {
 		CloudService mockCloud = spy(original);
-		doReturn(0).when(mockCloud).discover(Mockito.<RepositoryService>anyVararg());
+		
+		doReturn(0).when(mockCloud).discover(any(Integer.class),Mockito.<RepositoryService>anyVararg());
 		return mockCloud;
 	}
 	
@@ -99,6 +100,7 @@ public class LoginTest extends ApplicationTest {
 	
 	@Test
 	public void loginsGetRole() {
+		
 		
 		PortalUser user = someUserAs();
 		

@@ -14,10 +14,6 @@
 	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<properties>
-		<cotrix.version>0.1.0-SNAPSHOT</cotrix.version>
-	</properties>
-
 	<modules>
 		<module>cotrix-gcube-stubs</module>
 		<module>cotrix-gcube-portlet</module>
@@ -123,7 +119,7 @@
 
 			<properties>
 				<cotrix.version>0.2.0-SNAPSHOT</cotrix.version>
-				<ic.version>1.0.1-2.17.1</ic.version>
+				<ic.version>[1.0.0-SNAPSHOT, 2.0.0-SNAPSHOT)</ic.version>
 			</properties>
 
 
@@ -139,7 +135,7 @@
 				<repository>
 					<id>gcube-releases</id>
 					<name>gCube Releases</name>
-					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-releases</url>
+					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-releaeses</url>
 					<releases>
 						<enabled>true</enabled>
 					</releases>
@@ -147,7 +143,30 @@
 						<enabled>false</enabled>
 					</snapshots>
 				</repository>
+				
+				<repository>
+					<id>gcube-snapshots</id>
+					<name>gCube Snapshots</name>
+					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-snapshots</url>
+					<releases>
+						<enabled>false</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
 
+				<repository>
+					<id>gcube-externals</id>
+					<name>gCube Externals</name>
+					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-externals</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
 			</repositories>
 
 
