@@ -133,6 +133,18 @@
 				</repository>
 
 				<repository>
+					<id>gcube-releases</id>
+					<name>gCube Snapshots</name>
+					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-releaeses</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+				
+				<repository>
 					<id>gcube-snapshots</id>
 					<name>gCube Snapshots</name>
 					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-snapshots</url>
