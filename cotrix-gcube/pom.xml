@@ -135,7 +135,7 @@
 				<repository>
 					<id>gcube-releases</id>
 					<name>gCube Releases</name>
-					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-releaeses</url>
+					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-releases</url>
 					<releases>
 						<enabled>true</enabled>
 					</releases>
