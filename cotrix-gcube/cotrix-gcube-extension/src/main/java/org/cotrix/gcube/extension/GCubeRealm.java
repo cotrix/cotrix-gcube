@@ -158,7 +158,7 @@ public class GCubeRealm implements Realm {
 		User modified = modifyUser(internal)
 				.fullName(external.fullName())
 				.email(external.email())
-				.isNoLonger(internal.directRoles()) //eliminate older roles first
+				.isNoLonger(PortalRole.roles()) //eliminate older gcube roles first
 				.is(roles).build();
 
 		userRepository.update(modified);
