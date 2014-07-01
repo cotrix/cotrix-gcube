@@ -23,7 +23,7 @@ public class GCubePublisher {
 		logger.trace("onImportEvent event: {}", importEvent);
 		try {
 			PortalProxy portalProxy = importEvent.session.get(PortalProxy.class);
-			portalProxy.publish(importEvent.name+" version "+ importEvent.version+" now available.");
+			portalProxy.publish(importEvent.codelistName+" version "+ importEvent.codelistVersion+" now available.");
 		} catch(Exception e) {
 			logger.error("Failed news propagation", e);
 		}
@@ -33,7 +33,7 @@ public class GCubePublisher {
 		logger.trace("onPublishEvent event: {}", publishEvent);
 		try {
 			PortalProxy portalProxy = publishEvent.session.get(PortalProxy.class);
-			portalProxy.publish(publishEvent.name+" version "+ publishEvent.version+" has just been published to "+publishEvent.repository+".");
+			portalProxy.publish(publishEvent.codelistName+" version "+ publishEvent.codelistVersion+" has just been published to "+publishEvent.repository+".");
 		} catch(Exception e) {
 			logger.error("Failed news propagation", e);
 		}
@@ -43,7 +43,7 @@ public class GCubePublisher {
 		logger.trace("onVersionEvent event: {}", versionEvent);
 		try {
 			PortalProxy portalProxy = versionEvent.session.get(PortalProxy.class);
-			portalProxy.publish("version "+versionEvent.version+" of "+versionEvent.name+" now available.");
+			portalProxy.publish("version "+versionEvent.codelistVersion+" of "+versionEvent.codelistName+" now available.");
 		} catch(Exception e) {
 			logger.error("Failed news propagation", e);
 		}

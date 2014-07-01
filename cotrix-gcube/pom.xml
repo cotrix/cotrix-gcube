@@ -11,7 +11,7 @@
 
 	<groupId>org.cotrix</groupId>
 	<artifactId>cotrix-gcube</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -118,7 +118,7 @@
 			</activation>
 
 			<properties>
-				<cotrix.version>0.2.0-SNAPSHOT</cotrix.version>
+				<cotrix.version>0.3.0-SNAPSHOT</cotrix.version>
 				<ic.version>[1.0.0-SNAPSHOT, 2.0.0-SNAPSHOT)</ic.version>
 			</properties>
 

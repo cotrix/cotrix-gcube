@@ -5,7 +5,7 @@ package org.cotrix.gcube.extension;
 
 import static org.cotrix.action.UserAction.*;
 import static org.cotrix.common.Constants.*;
-import static org.cotrix.common.Utils.*;
+import static org.cotrix.common.CommonUtils.*;
 import static org.cotrix.domain.dsl.Users.*;
 import static org.cotrix.repository.UserQueries.*;
 
