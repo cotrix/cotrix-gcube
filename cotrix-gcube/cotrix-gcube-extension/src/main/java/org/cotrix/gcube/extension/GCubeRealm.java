@@ -4,8 +4,8 @@
 package org.cotrix.gcube.extension;
 
 import static org.cotrix.action.UserAction.*;
-import static org.cotrix.common.Constants.*;
 import static org.cotrix.common.CommonUtils.*;
+import static org.cotrix.common.Constants.*;
 import static org.cotrix.domain.dsl.Users.*;
 import static org.cotrix.repository.UserQueries.*;
 
@@ -18,8 +18,8 @@ import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.cotrix.common.cdi.BeanSession;
-import org.cotrix.common.cdi.Current;
+import org.cotrix.common.BeanSession;
+import org.cotrix.common.events.Current;
 import org.cotrix.domain.user.Role;
 import org.cotrix.domain.user.User;
 import org.cotrix.gcube.stubs.PortalUser;

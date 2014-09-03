@@ -6,10 +6,10 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.cotrix.common.cdi.BeanSession;
-import org.cotrix.common.cdi.Current;
-import org.cotrix.common.cdi.ApplicationEvents.EndRequest;
-import org.cotrix.common.cdi.ApplicationEvents.StartRequest;
+import org.cotrix.common.BeanSession;
+import org.cotrix.common.events.ApplicationLifecycleEvents.EndRequest;
+import org.cotrix.common.events.ApplicationLifecycleEvents.StartRequest;
+import org.cotrix.common.events.Current;
 import org.cotrix.domain.user.User;
 import org.cotrix.gcube.stubs.SessionToken;
 import org.gcube.common.scope.api.ScopeProvider;
